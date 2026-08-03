@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="glass-panel p-4 p-lg-5 mb-4">
+  <div class="d-flex flex-column flex-md-row align-items-start justify-content-between gap-3 mb-4">
+    <div>
+      <span class="eyebrow">What-if</span>
+      <h2 class="fw-bold mb-1">AI parking simulator</h2>
+      <p class="text-muted mb-0">Run scenario simulations to forecast congestion, availability, and utilization before it happens.</p>
+    </div>
+    <span class="badge badge-soft">Admin only</span>
+  </div>
+</section>
+
+<div class="row g-4">
+  <div class="col-md-4">
+    <div class="glass-panel p-4 h-100">
+      <h5 class="fw-bold mb-3">Scenarios</h5>
+      <div class="list-group mb-4">
+        <button class="list-group-item list-group-item-action" data-scenario="arrivals" data-params='{"extra_arrivals":50}'>50 cars arrive</button>
+        <button class="list-group-item list-group-item-action" data-scenario="ev_full" data-params='{"ev_area_full":true}'>EV area full</button>
+        <button class="list-group-item list-group-item-action" data-scenario="entrance_closed" data-params='{"entrance_closed":true}'>One entrance closed</button>
+        <button class="list-group-item list-group-item-action" data-scenario="weekend" data-params='{"arrival_rate":1.2}'>Weekend traffic</button>
+        <button class="list-group-item list-group-item-action" data-scenario="rainy" data-params='{"weather":"rainy"}'>Rainy day</button>
+        <button class="list-group-item list-group-item-action" data-scenario="event" data-params='{"event":true}'>Event traffic</button>
+      </div>
+      <h6 class="fw-semibold mb-3">Custom inputs</h6>
+      <div class="mb-3 form-floating">
+        <input id="custom_extra" class="form-control" type="number" value="0" placeholder="Extra arrivals">
+        <label for="custom_extra">Extra arrivals</label>
+      </div>
+      <div class="mb-3 form-floating">
+        <select id="custom_ev" class="form-select" placeholder="EV surge">
+          <option value="false">No</option>
+          <option value="true">Yes</option>
+        </select>
+        <label for="custom_ev">EV surge</label>
+      </div>
+      <button id="runCustom" class="btn btn-primary w-100">Run simulation</button>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <div class="glass-panel p-4 mb-4">
+      <h5 class="fw-bold mb-3">Simulation results</h5>
+      <div class="row g-3">
+        <div class="col-md-4"><div class="metric-card p-3">Congestion<br><strong id="sim_congestion">-</strong>%</div></div>
+        <div class="col-md-4"><div class="metric-card p-3">Available<br><strong id="sim_available">-</strong></div></div>
+        <div class="col-md-4"><div class="metric-card p-3">Utilization<br><strong id="sim_util">-</strong>%</strong></div></div>
+      </div>
+      <div class="mt-4">
+        <canvas id="simTimeline" height="140"></canvas>
+      </div>
+    </div>
+
+    <div class="glass-panel p-4">
+      <h5 class="fw-bold mb-3">Simulated map</h5>
+      <div id="simTwin" class="sim-map"></div>
+    </div>
+  </div>
+</div>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/what_if.css') }}">
+<script>window.INIT_SIM_SLOTS = {{ slots_json|tojson|safe }};</script>
+<script src="{{ url_for('static', filename='js/what_if.js') }}"></script>
+{% endblock %}

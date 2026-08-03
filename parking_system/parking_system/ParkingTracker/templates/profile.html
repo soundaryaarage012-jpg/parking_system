@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="glass-panel p-4 p-lg-5 mx-auto" style="max-width: 760px;">
+  <div class="d-flex flex-column flex-md-row align-items-start justify-content-between gap-3 mb-4">
+    <div>
+      <span class="eyebrow">Account</span>
+      <h2 class="fw-bold mb-1">Your profile</h2>
+      <p class="text-muted mb-0">Update your contact information and vehicle details for smarter parking assignment.</p>
+    </div>
+    <span class="badge badge-soft">Secure</span>
+  </div>
+
+  <form method="post" class="profile-form">
+    <div class="row g-3">
+      <div class="col-md-6 form-floating">
+        <input type="text" name="full_name" class="form-control" id="profileName" value="{{ current_user.full_name }}" placeholder="Full Name">
+        <label for="profileName">Full name</label>
+      </div>
+      <div class="col-md-6 form-floating">
+        <input type="email" class="form-control" id="profileEmail" value="{{ current_user.email }}" disabled placeholder="Email">
+        <label for="profileEmail">Email address</label>
+      </div>
+      <div class="col-md-6 form-floating">
+        <input type="text" name="phone" class="form-control" id="profilePhone" value="{{ current_user.phone or '' }}" placeholder="Phone">
+        <label for="profilePhone">Phone number</label>
+      </div>
+      <div class="col-md-6 form-floating">
+        <input type="text" name="vehicle_number" class="form-control" id="profileVehicle" value="{{ current_user.vehicle_number or '' }}" placeholder="Vehicle number">
+        <label for="profileVehicle">Vehicle number</label>
+      </div>
+    </div>
+    <button class="btn btn-primary btn-xl mt-4">Save changes</button>
+  </form>
+</section>
+{% endblock %}

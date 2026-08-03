@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="glass-panel p-4 p-lg-5 mx-auto" style="max-width:760px;">
+  <div class="d-flex flex-column flex-md-row align-items-start justify-content-between gap-3 mb-4">
+    <div>
+      <span class="eyebrow">Alerts</span>
+      <h2 class="fw-bold mb-1">Parking notifications</h2>
+      <p class="text-muted mb-0">Stay informed about slot updates, reservations, and entrance alerts.</p>
+    </div>
+    <span class="badge badge-soft">Real-time</span>
+  </div>
+
+  <div class="glass-panel p-4">
+    <ul class="list-group mb-0">
+      {% for item in notifications %}
+        <li class="list-group-item">{{ item }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+{% endblock %}

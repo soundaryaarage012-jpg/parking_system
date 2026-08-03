@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="glass-panel p-4 p-lg-5 mb-4">
+  <div class="d-flex flex-column flex-md-row align-items-start justify-content-between gap-3 mb-4">
+    <div>
+      <span class="eyebrow">Smart map</span>
+      <h2>Digital twin parking map</h2>
+      <p class="text-muted mb-0">Visualize the entire garage in real time, with live slot states, predictions, and AI route guidance.</p>
+    </div>
+    <span class="badge-soft">Live occupancy</span>
+  </div>
+
+  <div class="action-grid mb-4">
+    <button id="focusAll" class="btn btn-outline-primary">Focus all slots</button>
+    <button id="focusAvailable" class="btn btn-outline-primary">Show available</button>
+    <button id="focusOccupied" class="btn btn-outline-primary">Show occupied</button>
+    <button id="focusReserved" class="btn btn-outline-primary">Show reserved</button>
+    <button id="visionModeToggle" class="btn btn-outline-primary">Vision mode</button>
+    <button id="predictionToggle" class="btn btn-outline-primary">Predictions</button>
+  </div>
+
+  <div class="d-flex flex-wrap gap-2 mb-3">
+    {% for intent in ['Nearest parking', 'EV parking', 'Wheelchair parking', 'Quick stop', 'Bike parking', 'SUV parking'] %}
+      <button class="btn btn-sm btn-outline-primary ai-intent-btn" type="button" data-intent="{{ intent }}">{{ intent }}</button>
+    {% endfor %}
+  </div>
+
+  <div id="aiDecisionTimeline" class="ai-decision-timeline" aria-live="polite">
+    <div class="timeline-step active">Scanning</div>
+    <div class="timeline-step">Comparing</div>
+    <div class="timeline-step">Optimizing</div>
+    <div class="timeline-step">Ready</div>
+  </div>
+</section>
+
+<div class="map-shell mb-4">
+  <div class="digital-twin-panel glass-panel">
+    <div class="mini-map" id="miniMap"></div>
+    <div id="digitalTwin" class="digital-twin" data-slots='{{ slots_json|tojson|safe }}' style="height:680px; border-radius: 32px; overflow:hidden; background:#071018;">
+      <!-- SVG map will be rendered here by JS -->
+    </div>
+  </div>
+
+  <aside class="side-panel glass-panel">
+    <div class="side-card">
+      <span class="eyebrow">Recommendation</span>
+      <h4>Best parking slot</h4>
+      {% if recommendation.recommended_slot %}
+        <h3 class="mb-2">{{ recommendation.recommended_slot.slot_number }}</h3>
+        <p class="mb-1 text-muted">Floor: {{ recommendation.recommended_slot.floor or 'N/A' }}</p>
+        <p class="mb-3 text-muted">Distance: {{ recommendation.metrics.walking_distance }}m</p>
+        <div class="stat-pill"><span>Confidence</span><strong>{{ recommendation.confidence or 0 }}%</strong></div>
+      {% else %}
+        <div class="alert alert-warning mb-0">No recommendation available yet.</div>
+      {% endif %}
+    </div>
+
+    <div class="side-card" id="aiRecommendationCard">
+      <h4>AI parking score</h4>
+      <div class="score-badge-wrap">
+        <div class="score-ring" style="--score: {{ recommendation.overall_score or 0 }};"></div>
+        <div>
+          <strong class="score-value">{{ recommendation.overall_score or 0 }}</strong>
+          <p class="text-muted mb-0">Composite slot quality</p>
+        </div>
+      </div>
+      <small class="text-muted">Walking distance, congestion, slot fit, and EV/accessibility are combined into a live score.</small>
+    </div>
+
+    <div class="side-card">
+      <h4>Strength metrics</h4>
+      {% for label, value, color in [
+        ('Safety', recommendation.metrics.safety, 'bg-success'),
+        ('Traffic', recommendation.metrics.traffic_score, 'bg-info'),
+        ('Exit', recommendation.metrics.exit_convenience, 'bg-warning'),
+        ('Access', recommendation.metrics.accessibility, 'bg-primary')
+      ] %}
+        <div class="mb-3">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <small class="fw-semibold">{{ label }}</small>
+            <small class="text-muted">{{ value }}%</small>
+          </div>
+          <div class="progress" style="height: 10px;">
+            <div class="progress-bar {{ color }}" role="progressbar" style="width: {{ value }}%;"></div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="side-card">
+      <h4>Smart route</h4>
+      <div id="routePreview" class="route-preview">
+        <span>Route preview coming soon.</span>
+      </div>
+    </div>
+
+    <div class="side-card">
+      <h4>Why this slot?</h4>
+      <ul class="list-group">
+        {% for line in recommendation.explanation %}
+          <li class="list-group-item"><i class="bi bi-check-circle-fill text-success me-2"></i>{{ line }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </aside>
+</div>
+
+<div id="slotInspector" class="glass-panel p-4 mt-4" style="display:none;">
+  <div class="d-flex gap-3 align-items-start">
+    <div id="inspector-qr" class="inspector-qr"></div>
+    <div>
+      <h5 id="inspector-slot">Slot details</h5>
+      <p id="inspector-status" class="mb-1"></p>
+      <p id="inspector-vehicle" class="mb-1"></p>
+      <p id="inspector-reservation" class="mb-1"></p>
+      <p id="inspector-time" class="mb-0 text-muted small"></p>
+    </div>
+  </div>
+</div>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/digital_twin.css') }}">
+<script>
+  window.INIT_SLOTS = {{ slots_json|tojson|safe }};
+</script>
+<script src="{{ url_for('static', filename='js/digital_twin.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="glass-panel p-4 p-lg-5">
+  <div class="d-flex align-items-start justify-content-between gap-3 mb-4">
+    <div>
+      <span class="eyebrow">Analytics</span>
+      <h2 class="fw-bold">Operational parking insights</h2>
+      <p class="text-muted mb-0">A consolidated view of occupancy, utilization, and vehicle mix for smarter planning.</p>
+    </div>
+    <span class="badge badge-soft">Enterprise</span>
+  </div>
+
+  <div class="row g-4 mb-4">
+    {% for title, value, tone in [
+      ('Total slots', payload.statistics.total_slots, 'primary'),
+      ('Available', payload.statistics.available_slots, 'success'),
+      ('Occupied', payload.statistics.occupied_slots, 'danger'),
+      ('Reserved', payload.statistics.reserved_slots, 'warning')
+    ] %}
+      <div class="col-md-3">
+        <div class="stat-card glass-panel p-4 h-100">
+          <span class="eyebrow">{{ title }}</span>
+          <h3 class="fw-bold text-{{ tone }} mb-0">{{ value }}</h3>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="row g-4">
+    <div class="col-lg-8">
+      <div class="glass-panel p-4 h-100">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <div>
+            <h4 class="fw-bold mb-1">Occupancy Trends</h4>
+            <p class="text-muted mb-0">Recent crowding across the week.</p>
+          </div>
+          <span class="eyebrow">Live feed</span>
+        </div>
+        <canvas id="occupancyChart" height="260"></canvas>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="glass-panel p-4 h-100">
+        <h4 class="fw-bold mb-3">Vehicle types</h4>
+        <div class="list-grid">
+          {% for key, value in payload.vehicle_types.items() %}
+            <div class="list-item">
+              <span>{{ key }}</span>
+              <strong>{{ value }}</strong>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+const ctx = document.getElementById('occupancyChart');
+if (ctx) {
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+      datasets: [{
+        label: 'Daily occupancy',
+        data: {{ payload.occupancy_series }},
+        borderColor: '#5b7dff',
+        backgroundColor: 'rgba(91, 125, 255, 0.18)',
+        tension: 0.38,
+        fill: true,
+        pointRadius: 3,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+      },
+      scales: {
+        x: { grid: { color: 'rgba(255,255,255,0.06)' }, ticks: { color: '#cbd5e1' } },
+        y: { grid: { color: 'rgba(255,255,255,0.06)' }, ticks: { color: '#cbd5e1' } }
+      }
+    }
+  });
+}
+</script>
+{% endblock %}

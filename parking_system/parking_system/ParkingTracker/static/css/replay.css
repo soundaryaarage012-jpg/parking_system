@@ -1,0 +1,8 @@
+#replayMap{background:linear-gradient(180deg,#06101f,#02070f);border:1px solid rgba(255,255,255,0.04);}
+.replay-slot{position:absolute;width:108px;height:56px;border-radius:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);color:#c9e6ff;display:flex;flex-direction:column;justify-content:center;align-items:center;transition:transform 500ms ease,background 300ms}
+.replay-slot.occupied{background:rgba(220,38,38,0.22);border-color:rgba(220,38,38,0.6);}
+.replay-slot.available{background:rgba(72,187,120,0.15);border-color:rgba(72,187,120,0.55);}
+.replay-slot.reserved{background:rgba(250,204,21,0.2);border-color:rgba(250,204,21,0.6);}
+.replay-slot span{font-size:12px}
+#eventLog .list-group-item{background:rgba(255,255,255,0.04);border:none;color:#e2f0ff;}
+#eventLog .list-group-item.active{background:rgba(56,189,248,0.18);}

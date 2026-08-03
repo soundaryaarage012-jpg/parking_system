@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="glass-panel p-4 p-lg-5 mx-auto" style="max-width: 760px;">
+  <div class="d-flex flex-column flex-md-row align-items-start justify-content-between gap-3 mb-4">
+    <div>
+      <span class="eyebrow">OCR</span>
+      <h2 class="fw-bold mb-1">License plate recognition</h2>
+      <p class="text-muted mb-0">Upload a vehicle image and extract plate details for quick entry validation.</p>
+    </div>
+    <span class="badge badge-soft">AI vision</span>
+  </div>
+
+  <div class="glass-panel p-4">
+    <form method="post" enctype="multipart/form-data">
+      <div class="mb-4">
+        <label class="form-label">Upload vehicle image</label>
+        <input type="file" class="form-control" name="image" accept="image/*" required>
+      </div>
+      <button class="btn btn-primary">Analyze plate</button>
+    </form>
+
+    {% if result %}
+      <div class="result-panel glass-panel p-4 mt-4">
+        <h5 class="fw-bold mb-3">Recognition result</h5>
+        <div class="metric-row mb-2"><span>Plate</span><strong>{{ result.vehicle_number or 'Unknown' }}</strong></div>
+        <div class="metric-row mb-2"><span>OCR text</span><strong>{{ result.ocr_text or '—' }}</strong></div>
+        <div class="metric-row"><span>Confidence</span><strong>{{ result.confidence_score or 0 }}</strong></div>
+      </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

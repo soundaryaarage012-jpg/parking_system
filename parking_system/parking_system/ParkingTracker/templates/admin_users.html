@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="glass-panel p-4 p-lg-5 mb-4">
+  <div class="d-flex flex-column flex-md-row align-items-start justify-content-between gap-3 mb-4">
+    <div>
+      <span class="eyebrow">Users</span>
+      <h2 class="fw-bold mb-1">User management</h2>
+      <p class="text-muted mb-0">Search and review registered users with role and vehicle details.</p>
+    </div>
+    <form method="get" class="search-form">
+      <div class="input-group">
+        <input type="text" name="q" class="form-control" value="{{ q }}" placeholder="Search by name, email or vehicle number">
+        <button class="btn btn-primary">Search</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<div class="glass-panel p-4">
+  <div class="table-responsive">
+    <table class="table mb-0">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Vehicle</th>
+          <th>Role</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+          <tr>
+            <td>{{ user.full_name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.vehicle_number or '—' }}</td>
+            <td>{{ user.role }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

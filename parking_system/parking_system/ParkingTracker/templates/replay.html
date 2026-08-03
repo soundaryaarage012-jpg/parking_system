@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="glass-panel p-4 p-lg-5 mb-4">
+  <div class="d-flex flex-column flex-md-row align-items-start justify-content-between gap-3 mb-4">
+    <div>
+      <span class="eyebrow">Replay</span>
+      <h2 class="fw-bold mb-1">Parking history playback</h2>
+      <p class="text-muted mb-0">Step through past occupancy, events, and vehicle movements with timeline control.</p>
+    </div>
+    <span class="badge badge-soft">Live history</span>
+  </div>
+
+  <div class="d-flex flex-wrap gap-2">
+    <button id="playBtn" class="btn btn-primary">Play</button>
+    <button id="pauseBtn" class="btn btn-outline-secondary">Pause</button>
+    <button id="ffBtn" class="btn btn-outline-primary">Fast forward</button>
+    <button id="slowBtn" class="btn btn-outline-secondary">Slow motion</button>
+  </div>
+</section>
+
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div class="glass-panel p-4 h-100">
+      <div class="mb-4">
+        <div class="d-flex align-items-center justify-content-between gap-3">
+          <div>
+            <h4 class="fw-bold mb-1">Playback timeline</h4>
+            <p class="text-muted mb-0">Control the replay speed and review events in sequence.</p>
+          </div>
+          <span class="badge badge-soft">{{ payload.metrics.total_events }} events</span>
+        </div>
+      </div>
+      <div class="progress mb-4" style="height:14px; border-radius: 16px; overflow:hidden;">
+        <div id="replayProgress" class="progress-bar bg-primary" role="progressbar" style="width:0%"></div>
+      </div>
+      <div id="replayMap" class="replay-map"></div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="glass-panel p-4 mb-4">
+      <h5 class="fw-bold mb-3">Timeline events</h5>
+      <div id="eventLog" class="event-log"></div>
+    </div>
+    <div class="glass-panel p-4">
+      <h5 class="fw-bold mb-3">Replay metrics</h5>
+      <div class="metric-row mb-2"><span>Peak occupancy</span><strong>{{ payload.metrics.peak_occupancy }}</strong></div>
+      <div class="metric-row mb-2"><span>Average wait</span><strong>{{ payload.metrics.avg_wait_time_min }} min</strong></div>
+      <div class="metric-row mb-2"><span>Reservations</span><strong>{{ payload.metrics.reservation_count }}</strong></div>
+      <div class="metric-row"><span>Total events</span><strong>{{ payload.metrics.total_events }}</strong></div>
+    </div>
+  </div>
+</div>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/replay.css') }}">
+<script>window.REPLAY_PAYLOAD = {{ payload|tojson|safe }};</script>
+<script src="{{ url_for('static', filename='js/replay.js') }}"></script>
+{% endblock %}

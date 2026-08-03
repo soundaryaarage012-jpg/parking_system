@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Smart Parking icon">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#4F46E5" />
+      <stop offset="55%" stop-color="#7C3AED" />
+      <stop offset="100%" stop-color="#38BDF8" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="18" fill="#0B0B12"/>
+  <rect x="8" y="8" width="48" height="48" rx="14" fill="url(#g)" opacity="0.92"/>
+  <path d="M22 18h9.5c8.6 0 15 5.8 15 14.5S40.1 47 31.5 47H22V18zm9.5 23.5c4.6 0 7.9-2.7 7.9-8.7s-3.3-8.7-7.9-8.7H27V41.5h4.5z" fill="#ffffff" opacity="0.98"/>
+  <path d="M42 18h5.5v29H42z" fill="#ffffff" opacity="0.88"/>
+</svg>

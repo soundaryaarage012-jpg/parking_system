@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="premium-shell">
+  <section class="premium-hero glass-panel">
+    <div class="hero-copy">
+      <span class="eyebrow">AI parking flow</span>
+      <h1>Find the fastest spot <span>before the next turn.</span></h1>
+      <p class="hero-subheadline">Intelligence Meets Every Parking Spot.</p>
+      <p>Live occupancy intelligence, premium guidance, and frictionless parking for every arrival.</p>
+      <div class="hero-actions">
+        <a href="{{ url_for('main.register') }}" class="cta-button magnetic-button">Launch dashboard</a>
+        <a href="{{ url_for('main.parking') }}" class="secondary-button magnetic-button">Explore map</a>
+      </div>
+      <div class="hero-meta">
+        <div class="hero-meta-item">
+          <span>Available</span>
+          <strong>{{ stats.available_slots }}</strong>
+        </div>
+        <div class="hero-meta-item">
+          <span>Zone B</span>
+          <strong>12 free</strong>
+        </div>
+        <div class="hero-meta-item">
+          <span>AI ETA</span>
+          <strong>90s</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="parking-scene" aria-label="Smart parking visual">
+        <div class="slot-row">
+          <div class="slot-marker available" data-value="A1"></div>
+          <div class="slot-marker available" data-value="A2"></div>
+          <div class="slot-marker occupied" data-value="A3"></div>
+          <div class="slot-marker reserved" data-value="A4"></div>
+        </div>
+        <div class="slot-row">
+          <div class="slot-marker available" data-value="B1"></div>
+          <div class="slot-marker occupied" data-value="B2"></div>
+          <div class="slot-marker available" data-value="B3"></div>
+          <div class="slot-marker available" data-value="B4"></div>
+        </div>
+        <div class="slot-row">
+          <div class="slot-marker reserved" data-value="C1"></div>
+          <div class="slot-marker available" data-value="C2"></div>
+          <div class="slot-marker available" data-value="C3"></div>
+          <div class="slot-marker occupied" data-value="C4"></div>
+        </div>
+        <div class="parking-lane"></div>
+        <div class="car one"></div>
+        <div class="car two"></div>
+        <div class="car three"></div>
+
+        <div class="floating-ai-panel">
+          <div class="ai-panel-header">
+            <span>AI recommendation</span>
+            <span class="pulse-dot"></span>
+          </div>
+          <p id="aiRecommendationText" class="ai-panel-copy">Zone B has 12 free slots, 90s from entrance.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dashboard-grid">
+    <div class="metric-card">
+      <span class="meta-label">Total slots</span>
+      <strong>{{ stats.total_slots }}</strong>
+      <span>Across every zone and level.</span>
+    </div>
+    <div class="metric-card">
+      <span class="meta-label">Available</span>
+      <strong>{{ stats.available_slots }}</strong>
+      <span>Ready for fast arrivals.</span>
+    </div>
+    <div class="metric-card">
+      <span class="meta-label">Occupied</span>
+      <strong>{{ stats.occupied_slots }}</strong>
+      <span>Live usage throughout the day.</span>
+    </div>
+    <div class="metric-card">
+      <span class="meta-label">Reserved</span>
+      <strong>{{ stats.reserved_slots }}</strong>
+      <span>Booked and protected spaces.</span>
+    </div>
+  </section>
+
+  <section class="dashboard-grid mt-4">
+    <div class="stat-card">
+      <span class="eyebrow">Why it works</span>
+      <h3>Real-time parking intelligence</h3>
+      <ul class="list-group mt-3">
+        <li class="list-group-item"><i class="bi bi-check-circle-fill text-success me-2"></i>Live QR scanning and secure access</li>
+        <li class="list-group-item"><i class="bi bi-check-circle-fill text-success me-2"></i>AI occupancy prediction and guidance</li>
+        <li class="list-group-item"><i class="bi bi-check-circle-fill text-success me-2"></i>Instant occupancy heatmaps and forecast clarity</li>
+      </ul>
+    </div>
+    <div class="stat-card">
+      <span class="eyebrow">Get started</span>
+      <h3>Launch in under a minute.</h3>
+      <p class="mt-3 mb-3 text-muted">Sign up, open the parking layout, and reserve a slot instantly.</p>
+      <a href="{{ url_for('main.register') }}" class="btn btn-primary w-100 mb-2">Create account</a>
+      <a href="{{ url_for('main.parking') }}" class="btn btn-outline-primary w-100">Explore slots</a>
+    </div>
+    <div class="stat-card">
+      <span class="eyebrow">Operations</span>
+      <h3>Built for control rooms.</h3>
+      <p class="mt-3 mb-3 text-muted">Admins can monitor the map, manage access, and track every operational event in one place.</p>
+      <a href="{{ url_for('main.login') }}" class="btn btn-secondary w-100">Admin login</a>
+    </div>
+    <div class="stat-card">
+      <span class="eyebrow">AI signal</span>
+      <h3>{{ stats.total_users }} active users</h3>
+      <p class="mt-3 text-muted">Smart recommendations scale across your campus, garage, and fleet.</p>
+    </div>
+  </section>
+</div>
+{% endblock %}

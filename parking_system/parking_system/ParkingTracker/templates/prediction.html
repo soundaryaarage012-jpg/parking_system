@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="glass-panel p-4 p-lg-5 mx-auto" style="max-width: 760px;">
+  <div class="d-flex align-items-start justify-content-between gap-4 mb-4">
+    <div>
+      <span class="eyebrow">Forecasting</span>
+      <h2 class="fw-bold mb-2">AI parking prediction</h2>
+      <p class="text-muted mb-0">View the expected occupancy and use smart planning for your next arrival.</p>
+    </div>
+    <div class="forecast-pill glass-panel">
+      <span>Prediction horizon</span>
+      <strong>Next 24h</strong>
+    </div>
+  </div>
+
+  <div class="forecast-grid">
+    <div class="forecast-card glass-panel p-4">
+      <span class="eyebrow">Predicted fullness</span>
+      <h1 class="fw-bold display-4 mb-2">{{ prediction.occupancy_prediction }}%</h1>
+      <p class="text-muted mb-0">{{ prediction.message }}</p>
+    </div>
+    <div class="forecast-card glass-panel p-4">
+      <span class="eyebrow">Time window</span>
+      <p class="fw-bold mb-3">{{ prediction.hour }}:00 · Day {{ prediction.day }}</p>
+      <div class="progress rounded-pill">
+        <div class="progress-bar bg-info" role="progressbar" style="width: {{ prediction.occupancy_prediction }}%;"></div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

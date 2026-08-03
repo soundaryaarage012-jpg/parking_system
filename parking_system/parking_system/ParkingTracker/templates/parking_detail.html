@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="slot-detail-shell">
+  <div class="slot-detail-card glass-panel">
+    <div class="slot-detail-header">
+      <div>
+        <span class="eyebrow">Slot control</span>
+        <h1 class="slot-detail-title">{{ slot.slot_number }}</h1>
+      </div>
+      <span class="slot-status-badge slot-status-{{ slot.status|lower }}">{{ slot.status|capitalize }}</span>
+    </div>
+
+    <div class="slot-detail-meta">
+      <div class="detail-meta-item">
+        <span>Block</span>
+        <strong>{{ slot.block_name }}</strong>
+      </div>
+      <div class="detail-meta-item">
+        <span>Access state</span>
+        <strong>{{ slot.status|capitalize }}</strong>
+      </div>
+      <div class="detail-meta-item">
+        <span>Operational mode</span>
+        <strong>Live</strong>
+      </div>
+    </div>
+
+    <div class="slot-detail-actions">
+      {% if slot.status == 'available' %}
+        <form method="post" action="{{ url_for('main.reserve_slot', slot_id=slot.id) }}">
+          <button class="slot-action action-primary" type="submit" aria-label="Reserve slot {{ slot.slot_number }}">Reserve Slot</button>
+        </form>
+      {% elif slot.status == 'reserved' %}
+        <form method="post" action="{{ url_for('main.occupy_slot', slot_id=slot.id) }}">
+          <button class="slot-action action-danger" type="submit" aria-label="Occupy slot {{ slot.slot_number }}">Occupy Slot</button>
+        </form>
+        <form method="post" action="{{ url_for('main.cancel_reservation', slot_id=slot.id) }}">
+          <button class="slot-action action-secondary" type="submit" aria-label="Cancel reservation for slot {{ slot.slot_number }}">Cancel Reservation</button>
+        </form>
+      {% else %}
+        <form method="post" action="{{ url_for('main.release_slot', slot_id=slot.id) }}">
+          <button class="slot-action action-success" type="submit" aria-label="Release slot {{ slot.slot_number }}">Release Slot</button>
+        </form>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="slot-detail-card glass-panel slot-qr-card">
+    <div class="slot-qr-content">
+      <span class="eyebrow">Fast access</span>
+      <h2 class="slot-qr-title">Scan to open this slot instantly</h2>
+      <div class="qr-shell">
+        <img src="{{ qr_path }}" alt="QR code for slot {{ slot.slot_number }}" class="qr-image">
+      </div>
+      <p class="slot-qr-copy">Use this code at the gate or on the floor to reach the live slot control page with minimal friction.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

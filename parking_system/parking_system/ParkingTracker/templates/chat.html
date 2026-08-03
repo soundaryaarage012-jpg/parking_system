@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="glass-panel p-4 p-lg-5 mb-4">
+  <div class="d-flex flex-column flex-md-row align-items-start justify-content-between gap-3 mb-4">
+    <div>
+      <span class="eyebrow">Chat</span>
+      <h2 class="fw-bold mb-1">Parking chat assistant</h2>
+      <p class="text-muted mb-0">Ask about EV slots, busy areas, and current occupancy in natural language.</p>
+    </div>
+    <span class="badge badge-soft">Conversational</span>
+  </div>
+
+  <div class="glass-panel p-4">
+    <div class="alert alert-info mb-4">
+      Try: “Is there an EV slot?”, “Is there an SUV slot?”, or “How busy is the parking?”
+    </div>
+
+    <form method="post" class="mb-4">
+      <div class="input-group">
+        <input type="text" name="message" class="form-control" placeholder="Example: Is there an EV slot?" required>
+        <button class="btn btn-primary" type="submit">Send</button>
+      </div>
+    </form>
+
+    <div class="chat-panel">
+      {% if chat_history %}
+        {% for item in chat_history %}
+          <div class="chat-bubble {{ 'assistant' if item.role == 'assistant' else 'user' }} mb-3">
+            <div class="chat-label">{{ 'Assistant' if item.role == 'assistant' else 'You' }}</div>
+            <div>{{ item.content }}</div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="text-muted mb-0">No messages yet. Try asking about an EV slot or SUV slot.</p>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}

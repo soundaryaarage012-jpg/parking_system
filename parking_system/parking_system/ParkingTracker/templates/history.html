@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="glass-panel p-4 p-lg-5 mb-4">
+  <div class="d-flex flex-column flex-md-row align-items-start justify-content-between gap-3 mb-4">
+    <div>
+      <span class="eyebrow">History</span>
+      <h2 class="fw-bold mb-1">Parking activity log</h2>
+      <p class="text-muted mb-0">Review your recent visits, reserved slots, and duration details.</p>
+    </div>
+    <a href="{{ url_for('main.export_history') }}" class="btn btn-outline-primary">Export CSV</a>
+  </div>
+
+  <div class="glass-panel p-4">
+    {% if history %}
+      <div class="table-responsive">
+        <table class="table mb-0">
+          <thead>
+            <tr>
+              <th>Slot</th>
+              <th>Entry time</th>
+              <th>Exit time</th>
+              <th>Duration</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in history %}
+              <tr>
+                <td>{{ item.slot_number }}</td>
+                <td>{{ item.entry_time }}</td>
+                <td>{{ item.exit_time or '—' }}</td>
+                <td>{{ item.duration or '—' }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p class="text-muted mb-0">No parking activity found.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="auth-shell glass-panel p-4 p-lg-5 mx-auto mt-5" style="max-width: 700px;">
+  <div class="text-center mb-4">
+    <span class="eyebrow">Join the operation</span>
+    <h2 class="fw-bold">Create your smart parking account</h2>
+    <p class="text-muted mb-0">Start managing reservations, live occupancy, and AI-backed parking recommendations.</p>
+  </div>
+  <form method="post" class="auth-form">
+    <div class="row g-3">
+      <div class="col-md-6 form-floating">
+        <input type="text" name="full_name" class="form-control" id="registerName" placeholder="Full name" required>
+        <label for="registerName">Full name</label>
+      </div>
+      <div class="col-md-6 form-floating">
+        <input type="email" name="email" class="form-control" id="registerEmail" placeholder="Email" required>
+        <label for="registerEmail">Email address</label>
+      </div>
+      <div class="col-md-6 form-floating">
+        <input type="text" name="phone" class="form-control" id="registerPhone" placeholder="Phone">
+        <label for="registerPhone">Phone number</label>
+      </div>
+      <div class="col-md-6 form-floating">
+        <input type="text" name="vehicle_number" class="form-control" id="registerVehicle" placeholder="Vehicle number">
+        <label for="registerVehicle">Vehicle number</label>
+      </div>
+      <div class="col-md-6 form-floating">
+        <input type="password" name="password" class="form-control" id="registerPassword" placeholder="Password" required>
+        <label for="registerPassword">Password</label>
+      </div>
+      <div class="col-md-6 form-floating">
+        <input type="password" name="confirm_password" class="form-control" id="registerConfirm" placeholder="Confirm password" required>
+        <label for="registerConfirm">Confirm password</label>
+      </div>
+    </div>
+    <button class="btn btn-primary w-100 btn-xl mt-4">Create account</button>
+  </form>
+  <p class="text-center text-muted mt-4 mb-0">Already registered? <a href="{{ url_for('main.login') }}">Sign in</a></p>
+</section>
+{% endblock %}

@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="dashboard-header">
+  <div>
+    <span class="eyebrow">Operations</span>
+    <h2>Parking control center</h2>
+    <p>Live occupancy, smart reservations, and AI guidance in one premium view.</p>
+  </div>
+  <span class="badge-soft">Updated live</span>
+</div>
+
+<div class="alert" id="liveUpdateBanner">Live parking updates are warming up...</div>
+
+<div class="dashboard-grid mb-4">
+  <div class="metric-card">
+    <span class="meta-label">Total slots</span>
+    <strong class="count-up" data-target="{{ stats.total_slots }}">0</strong>
+    <span>Across every zone.</span>
+  </div>
+  <div class="metric-card">
+    <span class="meta-label">Available</span>
+    <strong class="count-up" data-target="{{ stats.available_slots }}">0</strong>
+    <span>Ready for arrivals.</span>
+  </div>
+  <div class="metric-card">
+    <span class="meta-label">Occupied</span>
+    <strong class="count-up" data-target="{{ stats.occupied_slots }}">0</strong>
+    <span>Capacity in use.</span>
+  </div>
+  <div class="metric-card">
+    <span class="meta-label">Reserved</span>
+    <strong class="count-up" data-target="{{ stats.reserved_slots }}">0</strong>
+    <span>Protected for drivers.</span>
+  </div>
+</div>
+
+<div class="session-card mb-4">
+  <div class="vehicle-info">
+    <div class="vehicle-badge"><span class="vehicle-chip"><i class="bi bi-car-front-fill"></i></span> Vehicle in session</div>
+    <div class="slot-zone">
+      <small>Current booking</small>
+      <strong>Zone B · Slot 18</strong>
+    </div>
+    <div>
+      <p class="mb-1 text-muted">Plate: MH12 AB 4495</p>
+      <p class="mb-0 text-muted">Model: Premium Sedan</p>
+    </div>
+    <div class="session-actions">
+      <button type="button" class="btn action-primary">Extend</button>
+      <button type="button" class="btn action-secondary">Navigate back</button>
+      <button type="button" class="btn action-danger">Release</button>
+    </div>
+  </div>
+  <div class="countdown-panel">
+    <div class="progress-ring" style="--progress: 72;">
+      <span>42m</span>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-lg-5">
+    <div class="glass-panel dashboard-card p-4 h-100">
+      <div class="d-flex align-items-start justify-content-between gap-3 mb-3">
+        <div>
+          <span class="eyebrow">AI operations</span>
+          <h3>Smart parking control</h3>
+        </div>
+        <span class="badge-soft">Live</span>
+      </div>
+      <div class="metric-grid">
+        <div class="metric-card">
+          <span class="meta-label">Total users</span>
+          <strong>{{ stats.total_users }}</strong>
+        </div>
+        <div class="metric-card">
+          <span class="meta-label">Entries</span>
+          <strong>{{ stats.todays_entries }}</strong>
+        </div>
+        <div class="metric-card">
+          <span class="meta-label">Exits</span>
+          <strong>{{ stats.todays_exits }}</strong>
+        </div>
+        <div class="metric-card">
+          <span class="meta-label">Efficiency</span>
+          <strong>91%</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-7">
+    <div class="glass-panel dashboard-card p-4 h-100">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <div>
+          <span class="eyebrow">Forecasting</span>
+          <h3>Occupancy trend</h3>
+        </div>
+        <span class="badge-soft">AI powered</span>
+      </div>
+      <canvas id="occupancyTrendChart" height="260"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="glass-panel dashboard-card overflow-hidden p-4 mb-4">
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <div>
+      <span class="eyebrow">Recommendation engine</span>
+      <h3>AI parking negotiator</h3>
+    </div>
+    <div class="recommendation-badge">
+      <span>Confidence</span>
+      <strong>{{ recommendation.confidence or 0 }}%</strong>
+    </div>
+  </div>
+
+  {% if recommendation.recommended_slot %}
+    <div class="row g-4">
+      <div class="col-xl-4 col-md-6">
+        <div class="panel-card h-100">
+          <span class="eyebrow">Recommended slot</span>
+          <h3 class="mb-2">{{ recommendation.recommended_slot.slot_number }}</h3>
+          <p class="text-muted mb-1">Floor: {{ recommendation.recommended_slot.floor or 'N/A' }}</p>
+          <p class="text-muted mb-3">Distance: {{ recommendation.metrics.walking_distance }}m</p>
+          <div class="stat-pill mb-2">
+            <span>Score</span>
+            <strong>{{ recommendation.overall_score }}</strong>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-8 col-md-6">
+        <div class="panel-card h-100">
+          {% for label, value, color in [
+            ('Safety', recommendation.metrics.safety, 'bg-success'),
+            ('Traffic', recommendation.metrics.traffic_score, 'bg-info'),
+            ('Exit', recommendation.metrics.exit_convenience, 'bg-warning'),
+            ('Accessibility', recommendation.metrics.accessibility, 'bg-primary'),
+            ('CO₂ Saved', recommendation.metrics.co2_saved, 'bg-secondary'),
+            ('Efficiency', recommendation.metrics.energy_efficiency, 'bg-dark')
+          ] %}
+            <div class="mb-3">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <small class="fw-semibold">{{ label }}</small>
+                <small class="text-muted">{{ value }}%</small>
+              </div>
+              <div class="progress" style="height: 10px;">
+                <div class="progress-bar {{ color }}" role="progressbar" style="width: {{ value }}%;"></div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <div class="alert alert-warning">No recommendation available from the current dataset.</div>
+  {% endif %}
+</div>
+{% endblock %}

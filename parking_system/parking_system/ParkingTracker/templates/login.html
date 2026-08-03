@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="auth-shell glass-panel p-4 p-lg-5 mx-auto mt-5" style="max-width: 560px;">
+  <div class="text-center mb-4">
+    <span class="eyebrow">Secure access</span>
+    <h2 class="fw-bold">Welcome back</h2>
+    <p class="text-muted mb-0">Sign in to manage parking operations, reservations, and live analytics.</p>
+  </div>
+  <form method="post" class="auth-form">
+    <div class="mb-3 form-floating">
+      <input type="email" name="email" class="form-control" id="loginEmail" placeholder="name@example.com" required>
+      <label for="loginEmail">Email address</label>
+    </div>
+    <div class="mb-4 form-floating">
+      <input type="password" name="password" class="form-control" id="loginPassword" placeholder="Password" required>
+      <label for="loginPassword">Password</label>
+    </div>
+    <button class="btn btn-primary w-100 btn-xl">Sign in</button>
+  </form>
+  <p class="text-center text-muted mt-4 mb-0">New user? <a href="{{ url_for('main.register') }}">Create an account</a></p>
+</section>
+{% endblock %}

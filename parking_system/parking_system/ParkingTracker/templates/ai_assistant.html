@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="glass-panel p-4 p-lg-5 mx-auto" style="max-width: 980px;">
+  <div class="d-flex align-items-start justify-content-between gap-3 mb-4">
+    <div>
+      <span class="eyebrow">AI assistant</span>
+      <h2 class="fw-bold">Explainable parking recommendations</h2>
+      <p class="text-muted mb-0">The assistant surfaces the best slot with clear, operational reasoning for every decision.</p>
+    </div>
+    <span class="badge badge-soft">Explainable AI</span>
+  </div>
+
+  <div class="mb-4 d-flex flex-wrap gap-2">
+    {% for intent in ['Nearest parking', 'EV parking', 'Wheelchair parking', 'Quick stop', 'Bike parking', 'SUV parking'] %}
+      <button class="btn btn-outline-primary ai-intent-btn" type="button" data-intent="{{ intent }}">{{ intent }}</button>
+    {% endfor %}
+  </div>
+
+  <div class="assistant-grid">
+    <div class="assistant-panel glass-panel p-4">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <div>
+          <h3 class="fw-bold mb-1">AI insight</h3>
+          <p class="text-muted mb-0">Current slot recommendation based on live occupancy and vehicle fit.</p>
+        </div>
+        <i class="bi bi-robot fs-2 text-primary"></i>
+      </div>
+      <div id="aiRecommendationBox" class="assistant-response glass-panel p-4">
+        <strong>{{ response.message }}</strong>
+      </div>
+      <div id="aiDecisionTimeline" class="ai-decision-timeline mt-3" aria-live="polite">
+        <div class="timeline-step active">Scanning</div>
+        <div class="timeline-step">Comparing</div>
+        <div class="timeline-step">Optimizing</div>
+        <div class="timeline-step">Ready</div>
+      </div>
+    </div>
+    <div id="aiRecommendationSummary" class="assistant-panel glass-panel p-4">
+      {% if response.recommended_slot %}
+        <span class="eyebrow">Recommended slot</span>
+        <h3 class="fw-bold mb-3">{{ response.recommended_slot.slot_number }}</h3>
+        <div class="assistant-metrics">
+          <div><span>Floor</span><strong>{{ response.recommended_slot.floor or 'N/A' }}</strong></div>
+          <div><span>Status</span><strong>{{ response.recommended_slot.status }}</strong></div>
+          <div><span>Distance</span><strong>{{ response.recommended_slot.distance_from_entrance }}m</strong></div>
+        </div>
+      {% else %}
+        <div class="alert alert-warning mb-0">No recommendation available at the moment.</div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="glass-panel p-4 mt-4">
+    <h4 class="fw-bold mb-3">How this works</h4>
+    <div class="process-list">
+      <div><strong>1.</strong> Analyze real-time slot availability.</div>
+      <div><strong>2.</strong> Score options by distance, EV readiness, and safety.</div>
+      <div><strong>3.</strong> Return a transparent recommendation for operators.</div>
+    </div>
+  </div>
+</section>
+{% endblock %}

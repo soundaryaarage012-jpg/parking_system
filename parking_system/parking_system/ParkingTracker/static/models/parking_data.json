@@ -1,0 +1,50 @@
+[
+  {
+    "hour": 8,
+    "day": 1,
+    "occupancy": 65,
+    "available": 5
+  },
+  {
+    "hour": 9,
+    "day": 1,
+    "occupancy": 80,
+    "available": 2
+  },
+  {
+    "hour": 10,
+    "day": 1,
+    "occupancy": 92,
+    "available": 1
+  },
+  {
+    "hour": 11,
+    "day": 1,
+    "occupancy": 88,
+    "available": 2
+  },
+  {
+    "hour": 12,
+    "day": 2,
+    "occupancy": 70,
+    "available": 4
+  },
+  {
+    "hour": 13,
+    "day": 2,
+    "occupancy": 82,
+    "available": 3
+  },
+  {
+    "hour": 14,
+    "day": 2,
+    "occupancy": 90,
+    "available": 1
+  },
+  {
+    "hour": 15,
+    "day": 3,
+    "occupancy": 74,
+    "available": 4
+  }
+]

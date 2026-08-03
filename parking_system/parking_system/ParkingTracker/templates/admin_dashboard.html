@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="glass-panel p-4 p-lg-5 mb-4">
+  <div class="d-flex flex-column flex-md-row align-items-start justify-content-between gap-3 mb-4">
+    <div>
+      <span class="eyebrow">Admin</span>
+      <h2 class="fw-bold mb-1">Control center</h2>
+      <p class="text-muted mb-0">Manage users, slots, and parking operations from one unified admin dashboard.</p>
+    </div>
+    <span class="badge badge-soft">Administrator</span>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-md-3">
+      <div class="stat-card p-4 h-100">
+        <span class="eyebrow">Total users</span>
+        <h3 class="fw-bold">{{ stats.total_users }}</h3>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="stat-card p-4 h-100">
+        <span class="eyebrow">Available</span>
+        <h3 class="fw-bold text-success">{{ stats.available_slots }}</h3>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="stat-card p-4 h-100">
+        <span class="eyebrow">Occupied</span>
+        <h3 class="fw-bold text-danger">{{ stats.occupied_slots }}</h3>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="stat-card p-4 h-100">
+        <span class="eyebrow">Reserved</span>
+        <h3 class="fw-bold text-warning">{{ stats.reserved_slots }}</h3>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="row g-4 mb-4">
+  <div class="col-lg-6">
+    <div class="glass-panel p-4 h-100">
+      <h5 class="fw-bold mb-3">Add parking slot</h5>
+      <form method="post" action="{{ url_for('main.add_slot') }}">
+        <div class="mb-3">
+          <label for="slotNumber" class="form-label">Slot number</label>
+          <input type="text" name="slot_number" class="form-control" id="slotNumber" placeholder="Slot number">
+        </div>
+        <div class="mb-3">
+          <label for="blockName" class="form-label">Block name</label>
+          <input type="text" name="block_name" class="form-control" id="blockName" placeholder="Block name">
+        </div>
+        <button class="btn btn-primary">Add slot</button>
+      </form>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="glass-panel p-4 h-100">
+      <h5 class="fw-bold mb-3">Registered users</h5>
+      <div class="list-group mb-0">
+        {% for user in users %}
+          <div class="list-group-item">{{ user.full_name }} — {{ user.email }}</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="glass-panel p-4">
+  <h5 class="fw-bold mb-3">Parking slots</h5>
+  <div class="table-responsive">
+    <table class="table mb-0">
+      <thead>
+        <tr>
+          <th>Slot</th>
+          <th>Block</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for slot in slots %}
+          <tr>
+            <td>{{ slot.slot_number }}</td>
+            <td>{{ slot.block_name }}</td>
+            <td>{{ slot.status }}</td>
+            <td>
+              <form method="post" action="{{ url_for('main.delete_slot', slot_id=slot.id) }}" class="d-inline">
+                <button class="btn btn-danger">Delete</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

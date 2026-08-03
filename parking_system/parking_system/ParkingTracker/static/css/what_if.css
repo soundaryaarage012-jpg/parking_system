@@ -1,0 +1,7 @@
+#simTwin{position:relative;background:linear-gradient(180deg,#04111a,#071623);border-radius:6px;color:#cfe8ff}
+.sim-slot{position:relative;display:inline-block;width:110px;height:60px;margin:8px;padding:8px;border-radius:8px;background:rgba(255,255,255,0.03);color:#e6f7ff;text-align:center}
+.sim-slot.available{border:1px dashed rgba(72,187,120,0.6)}
+.sim-slot.occupied{border:2px solid rgba(220,38,38,0.9);background:linear-gradient(180deg,rgba(220,38,38,0.12),rgba(0,0,0,0.1))}
+.sim-slot.reserved{border:2px solid rgba(250,204,21,0.9)}
+.sim-slot .slot-number{font-weight:700}
+.sim-overlay{position:absolute;right:12px;top:12px;background:rgba(0,0,0,0.3);padding:6px;border-radius:6px;font-size:12px}
